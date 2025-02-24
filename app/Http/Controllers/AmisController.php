@@ -42,6 +42,7 @@ class AmisController extends Controller
 
     public function AnnulerDemandeAmitie(Request $request, $id){
         $user= auth()->user();
+
         $demandeanuller= DemandeAmitie::where('id',$id)
                                         ->where ('statut','en attente')
                                         ->findOrFail($id);
@@ -52,7 +53,12 @@ class AmisController extends Controller
 
     public  function showallamisaccepter(){
         $user = auth()->user();
+//        if (!$user) {
+//            return redirect()->route('login');
+//        }
         $amis = $user->amis;
+        dd($amis);
+
         return view('amis', compact('amis'));
     }
 
