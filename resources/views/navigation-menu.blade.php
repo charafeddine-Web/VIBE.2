@@ -168,7 +168,6 @@
                 <!-- Authentication (preserved) -->
                 <form method="POST" action="{{ route('logout') }}" x-data>
                     @csrf
-
                     <x-responsive-nav-link href="{{ route('logout') }}" class="text-red-600 hover:text-red-700 hover:bg-red-50"
                                            @click.prevent="$root.submit();">
                         <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
