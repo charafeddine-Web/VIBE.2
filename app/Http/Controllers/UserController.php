@@ -20,7 +20,7 @@ class UserController extends Controller
             ->orWhereRaw("LOWER(name) LIKE LOWER(?)", ["%$query%"])
             ->simplePaginate(10);
         return view('dashboard', [
-            'users' => $users ,
+            'users' => $users ?? collect(),
             'message' => $users->isEmpty() ? 'Aucun utilisateur trouvé.' : null,
         ]);
     }
