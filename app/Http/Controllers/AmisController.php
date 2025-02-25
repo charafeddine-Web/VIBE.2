@@ -57,7 +57,7 @@ class AmisController extends Controller
 //            return redirect()->route('login');
 //        }
         $amis = $user->amis;
-        dd($amis);
+//        dd($amis);
 
         return view('amis', compact('amis'));
     }

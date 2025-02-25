@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400 -mx-4 px-4 py-8 relative overflow-hidden">
+        <div class="bg-gradient-to-br  from-purple-400 to-indigo-900 -mx-4 px-4 py-2 relative overflow-hidden rounded-full">
             <!-- Decorative elements -->
             <div class="absolute inset-0 bg-grid-white/10 bg-[size:20px_20px]"></div>
             <div class="absolute h-32 w-32 rounded-full bg-purple-600/30 blur-3xl -top-10 -left-10"></div>
@@ -24,13 +24,13 @@
 
     <div class="max-w-5xl mx-auto px-4 py-8">
         <!-- Animated Wave Separator -->
-        <div class="w-full h-2 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 rounded-full mb-8"></div>
+        <div class="w-full h-2 bg-gradient-to-r from-pink-800 via-purple-400 to-indigo-400 rounded-full mb-8"></div>
 
         <!-- Demandes Container -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Demandes Envoyées -->
             <div class="group">
-                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-purple-100
+                <div class="bg-balck rounded-3xl shadow-2xl overflow-hidden border border-purple-100
                            transition-all duration-500 hover:shadow-purple-200/50 hover:-translate-y-1">
                     <div class="bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 p-6">
                         <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500
