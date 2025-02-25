@@ -153,7 +153,6 @@
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
             </div>
-
             <div class="mt-3 space-y-1">
                 <!-- Account Management (preserved) -->
                 <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')" class="text-gray-700 hover:text-blue-600 hover:bg-gray-100">
