@@ -21,7 +21,7 @@
                             </div>
                             <div class="flex-grow">
                                 <textarea
-                                    name="content"
+                                    name="contenu"
                                     rows="2"
                                     class="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 transition duration-200 ease-in-out"
                                     placeholder="What's on your mind, {{ Auth::user()->name }}?"
@@ -74,14 +74,14 @@
                             <!-- Post Header with User Info -->
                             <div class="flex items-center mb-3">
                                 <div class="flex-shrink-0">
-{{--                                    <img class="h-10 w-10 rounded-full object-cover" src="{{ $post->user->profile_photo_url ?? asset('img/default-avatar.png') }}" alt="{{ $post->user->name }}">--}}
+                                  <img class="h-10 w-10 rounded-full object-cover" src="{{ $post->auteur->profile_photo_url ?? asset('img/default-avatar.png') }}" alt="{{  $post->auteur?->name ?? 'Utilisateur inconnu' }}">
                                 </div>
                                 <div class="ml-3">
-{{--                                    <p class="font-medium text-gray-900 dark:text-white">{{ $post->user->name }}</p>--}}
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ $post?->auteur->name ?? 'Utilisateur inconnu' }}</p>
                                     <p class="text-xs text-gray-500 dark:text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
                                 </div>
 
-                                @if(auth()->user()->id === $post->user_id)
+                                @if(auth()->user()->id === $post->id)
                                     <div class="ml-auto">
                                         <form method="POST" action="{{ route('posts.destroy', $post->id) }}">
                                             @csrf

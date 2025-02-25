@@ -20,9 +20,8 @@ class Post extends Model
     /**
      * Relation avec l'utilisateur (Auteur du post).
      */
-    public function auteur(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'auteur');
+    public function auteur(){
+        return $this->belongsTo(User::class);
     }
 
     public function likes(){

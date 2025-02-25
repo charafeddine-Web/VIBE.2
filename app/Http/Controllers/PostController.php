@@ -5,14 +5,17 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\User;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::with('auteur')->orderBy('datePublication', 'desc')->get();
         return view('dashboard', compact('posts'));
     }
+
+
 
 
 //    public function create()
