@@ -12,66 +12,34 @@
                     </a>
                 </div>
 
-                <!-- Search Bar (Facebook style) -->
-
-
-                <div class="ml-4 flex items-center">
-                    <div class="relative">
-                        <form method="get" action="{{ route('Search') }}" class="flex items-center bg-gray-200 rounded-full px-4 py-1 w-40 shadow-sm">
-                            <i class="fas fa-search text-gray-500"></i>
-                            <input type="text" name="query" value="{{ request('query') }}"
-                                    autocomplete="query"
-                                   class="bg-transparent flex-1 h-9 pl-2 text-sm border-none w-20"
-                                   placeholder="Rechercher ...">
-                        </form>
+                <form action="{{ route('Search') }}" method="GET" class="relative">
+                    <div class="flex items-center bg-gray-200 rounded-full px-4 py-1 w-64 shadow-sm">
+                        <button type="submit" class="text-gray-500 hover:text-gray-700 transition">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <input type="text" name="query" placeholder="Rechercher un ami..."
+                               class="bg-transparent flex-1 h-9 pl-2 text-sm border-none w-full focus:outline-none">
                     </div>
-                </div>
-                <!-- Alpine.js pour gérer la modal -->
-{{--                <div x-data="{ open: false, query: '' }" class="relative">--}}
-{{--                    <!-- Barre de recherche -->--}}
-{{--                    <div class="ml-4 flex items-center">--}}
-{{--                        <div class="relative w-full">--}}
-{{--                            <form @click="open = true" class="flex items-center bg-gray-200 rounded-full px-4 py-1 w-40 shadow-sm">--}}
-{{--                                <i class="fas fa-search text-gray-500"></i>--}}
-{{--                                <input type="text" name="query" x-model="query" autocomplete="off"--}}
-{{--                                       class="bg-transparent flex-1 h-9 pl-2 text-sm border-none w-20"--}}
-{{--                                       placeholder="Rechercher...">--}}
-{{--                            </form>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+                </form>
 
-{{--                    <!-- Modal de recherche -->--}}
-{{--                    <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">--}}
-{{--                        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">--}}
-{{--                            <!-- Barre de recherche dans la modal -->--}}
-{{--                            <div class="flex items-center border-b pb-2">--}}
-{{--                                <i class="fas fa-search text-gray-500"></i>--}}
-{{--                                <input type="text" x-model="query" placeholder="Rechercher..." class="flex-1 px-2 py-2 border-none outline-none">--}}
-{{--                                <button @click="open = false" class="text-gray-500 hover:text-gray-700">&times;</button>--}}
-{{--                            </div>--}}
-
-{{--                            <!-- Résultats de recherche -->--}}
-{{--                            <div class="mt-4 max-h-60 overflow-y-auto">--}}
-{{--                                <template x-if="query.length > 0">--}}
-{{--                                    <ul class="space-y-2">--}}
-{{--                                        @foreach($users as $user)--}}
-{{--                                            <template x-if="$user->pseudo.toLowerCase().includes(query.toLowerCase())">--}}
-{{--                                                <li class="p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer flex items-center gap-3">--}}
-{{--                                                    <img src="{{ $user->profile_photo_url }}" class="w-10 h-10 rounded-full object-cover">--}}
-{{--                                                    <span class="text-gray-700">{{ $user->pseudo }}</span>--}}
-{{--                                                </li>--}}
-{{--                                            </template>--}}
-{{--                                        @endforeach--}}
-{{--                                    </ul>--}}
-{{--                                </template>--}}
-
-{{--                                <template x-if="query.length === 0">--}}
-{{--                                    <p class="text-sm text-gray-600 text-center">Tapez quelque chose pour voir les résultats...</p>--}}
-{{--                                </template>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                <!-- Modal affichant les résultats -->
+                @if(isset($users))
+                    <div class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-lg overflow-hidden z-50 border border-gray-200 p-3">
+                        @forelse ($users as $user)
+                            <a href="{{ url('/profile/' . $user->id) }}" class="flex items-center gap-3 p-2 hover:bg-gray-100 rounded">
+                                <div class="w-10 h-10 bg-gray-100 rounded-md overflow-hidden">
+                                    <img src="{{ $user->profile_photo_url ?? '/default-avatar.png' }}" alt="" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-800">{{ $user->name }}</p>
+                                    <p class="text-xs text-gray-500">{{ $user->email }}</p>
+                                </div>
+                            </a>
+                        @empty
+                            <p class="text-gray-500">Aucun utilisateur trouvé.</p>
+                        @endforelse
+                    </div>
+                @endif
 
 
 

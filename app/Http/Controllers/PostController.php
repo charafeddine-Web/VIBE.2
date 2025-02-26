@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Commentaire;
 use App\Models\DemandeAmitie;
+use App\Models\Like;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,9 +22,11 @@ class PostController extends Controller
             ->where('statut', 'en attente')
             ->with('receveur')
             ->get();
+        $comments= Commentaire::all();
+        $likes= Like::all();
 
-        $posts = Post::with('auteur')->orderBy('datePublication', 'desc')->get();
-            return view('dashboard', compact('posts','demandesRecues'));
+        $posts = Post::with(['auteur', 'likes', 'comments.user'])->orderBy('datePublication', 'desc')->get();
+            return view('dashboard', compact('posts','demandesRecues','comments','likes'));
     }
 
 

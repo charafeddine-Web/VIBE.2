@@ -14,7 +14,6 @@ class LikeController extends Controller
         $existingLike = Like::where('post_id', $postId)
             ->where('user_id', $user->id)
             ->first();
-
         if ($existingLike) {
             return back()->with('error', 'Vous avez déjà liké ce post.');
         }

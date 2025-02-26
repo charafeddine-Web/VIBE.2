@@ -16,7 +16,7 @@ class Commentaire extends Model
         return $this->belongsTo(Post::class);
     }
 
-    public function auteur()
+    public function user()
     {
         return $this->belongsTo(User::class, 'auteur');
     }

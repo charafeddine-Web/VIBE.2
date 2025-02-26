@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AmisController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentaireController;
 
 
@@ -26,7 +27,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'), 'verified',
 
     Route::get('/demandes', [AmisController::class, 'afficherDemandesAmitie'])->name('afficherDemandesAmitie');
     Route::post('/envoyer-demande-amitie/{utilisateur_recepteur_id}', [UserController::class, 'envoyerDemandeAmitie'])->name('envoyerDemandeAmitie');
-    Route::get('/Search',[UserController::class,'Search'])->name('Search');
+    Route::get('/Search', [UserController::class, 'search'])->name('Search');
 
     Route::post('/accepter-demande/{id}', [AmisController::class, 'accepterDemandeAmitie'])->name('accepterDemandeAmitie');
     Route::delete('/refuser-demande/{id}', [AmisController::class, 'refuserDemandeAmitie'])->name('refuserDemandeAmitie');
@@ -41,9 +42,11 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'), 'verified',
     Route::delete('posts/delete/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
 // Routes pour les commontaire
-    Route::get('commentaires', [CommentaireController::class, 'showallcomment'])->name('commentaires');
     Route::post('commentaires/Store', [CommentaireController::class, 'store'])->name('commentaires.store');
     Route::delete('commentaires/{id}', [CommentaireController::class, 'destroy'])->name('commentaires.destroy');
+
+// Routes pour les likes
+    Route::post('likePost/{id}', [LikeController::class, 'likePost'])->name('likePost');
 
 
 

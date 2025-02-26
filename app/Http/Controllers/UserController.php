@@ -8,22 +8,23 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function Search(Request $request)
+    public function search(Request $request)
     {
-        $request->validate([
-            'query' => 'required|string|min:2',
-        ]);
         $query = $request->input('query');
-        $users = User::whereRaw("LOWER(pseudo) LIKE LOWER(?)", ["%$query%"])
+
+        if (!$query) {
+            return view('navigation-menu'); // Afficher la page sans résultats
+        }
+
+        $users = User::whereRaw("LOWER(name) LIKE LOWER(?)", ["%$query%"])
             ->orWhereRaw("LOWER(email) LIKE LOWER(?)", ["%$query%"])
             ->orWhereRaw("LOWER(prenom) LIKE LOWER(?)", ["%$query%"])
-            ->orWhereRaw("LOWER(name) LIKE LOWER(?)", ["%$query%"])
-            ->simplePaginate(10);
-        return view('dashboard', [
-            'users' => $users ?? collect(),
-            'message' => $users->isEmpty() ? 'Aucun utilisateur trouvé.' : null,
-        ]);
+            ->orWhereRaw("LOWER(pseudo) LIKE LOWER(?)", ["%$query%"])
+            ->get(['id', 'name', 'email']);
+
+        return view('navigation-menu', compact('users'));
     }
+
 
 
     public function envoyerDemandeAmitie($utilisateur_recepteur_id)
