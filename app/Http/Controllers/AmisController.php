@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class AmisController extends Controller
 {
+
     public function afficherDemandesAmitie(){
         $utilisateur = auth()->user();
         $demandesEnvoyees=DemandeAmitie::where('utilisateur_demandeur_id', $utilisateur->id)

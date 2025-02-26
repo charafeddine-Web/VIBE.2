@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\DemandeAmitie;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,10 +10,19 @@ use App\Models\User;
 
 class PostController extends Controller
 {
+
+
     public function index()
     {
+        $utilisateur = auth()->user();
+
+        $demandesRecues=DemandeAmitie::where('utilisateur_recepteur_id', $utilisateur->id)
+            ->where('statut', 'en attente')
+            ->with('receveur')
+            ->get();
+
         $posts = Post::with('auteur')->orderBy('datePublication', 'desc')->get();
-        return view('dashboard', compact('posts'));
+            return view('dashboard', compact('posts','demandesRecues'));
     }
 
 
@@ -38,7 +48,7 @@ class PostController extends Controller
         }
 
         Post::create([
-            'auteur' => $user->id,
+            'auteur_id' => $user->id,
             'contenu' => $request->contenu,
             'image' => $imagePath,
             'datePublication'=>Carbon::now()
@@ -78,13 +88,10 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $user = auth()->user();
-
-        if ($post->auteur !== $user->id) {
+        if ($post->auteur_id !== $user->id) {
             return redirect()->back()->with('error', 'Vous n\'avez pas l\'autorisation de supprimer ce post.');
         }
-
         $post->delete();
-
         return redirect()->route('posts.index')->with('success', 'Post supprimé avec succès.');
     }
 }

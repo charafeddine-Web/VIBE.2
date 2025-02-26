@@ -11,7 +11,7 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'auteur',
+        'auteur_id',
         'contenu',
         'image',
         'datePublication',
@@ -21,8 +21,9 @@ class Post extends Model
      * Relation avec l'utilisateur (Auteur du post).
      */
     public function auteur(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'auteur_id');
     }
+
 
     public function likes(){
         return $this->hasMany(Like::class);

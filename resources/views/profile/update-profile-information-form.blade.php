@@ -13,9 +13,9 @@
             <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
                 <!-- Profile Photo File Input -->
                 <input type="file" id="photo" class="hidden"
-                            wire:model.live="photo"
-                            x-ref="photo"
-                            x-on:change="
+                       wire:model.live="photo"
+                       x-ref="photo"
+                       x-on:change="
                                     photoName = $refs.photo.files[0].name;
                                     const reader = new FileReader();
                                     reader.onload = (e) => {
@@ -53,7 +53,7 @@
         @endif
         <div class="col-span-6 sm:col-span-4">
             <x-label for="bio" value="{{ __('Bio') }}" />
-            <x-textarea id="bio"  class="mt-1 block w-full border-none" wire:model="state.bio"  autocomplete="bio" />
+            <x-textarea id="bio"  class="mt-1 block w-full" wire:model="state.bio" required autocomplete="bio" />
         </div>
         <div class="col-span-6 sm:col-span-4">
             <x-label for="pseudo" value="{{ __('Pseudo Name') }}" />

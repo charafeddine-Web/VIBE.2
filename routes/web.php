@@ -23,7 +23,6 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'), 'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
 
     Route::get('/demandes', [AmisController::class, 'afficherDemandesAmitie'])->name('afficherDemandesAmitie');
     Route::post('/envoyer-demande-amitie/{utilisateur_recepteur_id}', [UserController::class, 'envoyerDemandeAmitie'])->name('envoyerDemandeAmitie');
@@ -35,7 +34,6 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'), 'verified',
     Route::get('/list-Amis', [AmisController::class, 'showallamisaccepter'])->name('showallamis');
 
 // Routes pour les publication
-
     Route::get('posts', [PostController::class, 'index'])->name('posts.index');
     Route::post('posts', [PostController::class, 'store'])->name('posts.store');
     Route::get('posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
@@ -43,8 +41,8 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'), 'verified',
     Route::delete('posts/delete/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
 // Routes pour les commontaire
-
-    Route::post('commentaires', [CommentaireController::class, 'store'])->name('commentaires.store');
+    Route::get('commentaires', [CommentaireController::class, 'showallcomment'])->name('commentaires');
+    Route::post('commentaires/Store', [CommentaireController::class, 'store'])->name('commentaires.store');
     Route::delete('commentaires/{id}', [CommentaireController::class, 'destroy'])->name('commentaires.destroy');
 
 

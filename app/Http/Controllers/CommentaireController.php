@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class CommentaireController extends Controller
 {
+    public function showallcomment(){
+        $comments= Commentaire::all();
+//        dd($comments);
+        return redirect('commentaires',compact('comments'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([

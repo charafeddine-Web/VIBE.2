@@ -1,6 +1,5 @@
 <x-app-layout>
     <div class="min-h-screen  dark:bg-gray-900">
-        <!-- Main Container - Three Column Layout -->
         <div class="flex mx-auto">
             <!-- Left Sidebar - Navigation -->
             <x-sidebar-left />
@@ -70,57 +69,160 @@
                 <!-- Posts Feed -->
                 <div class="mt-6 space-y-6 max-w-2xl mx-auto">
                     @foreach($posts as $post)
-                        <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md relative border border-gray-200 dark:border-gray-700">
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md relative border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg" x-data="{ showComments: false }">
                             <!-- Post Header with User Info -->
                             <div class="flex items-center mb-3">
                                 <div class="flex-shrink-0">
-                                  <img class="h-10 w-10 rounded-full object-cover" src="{{ $post->auteur->profile_photo_url ?? asset('img/default-avatar.png') }}" alt="{{  $post->auteur?->name ?? 'Utilisateur inconnu' }}">
+                                    <img class="h-10 w-10 rounded-full object-cover border-2 border-indigo-500 transition-transform duration-300 hover:scale-105"
+                                         src="{{ $post->auteur->profile_photo_url ?? asset('img/default-avatar.png') }}"
+                                         alt="{{ $post->auteur?->name ?? 'Utilisateur inconnu' }}">
                                 </div>
                                 <div class="ml-3">
-                                    <p class="font-medium text-gray-900 dark:text-white">{{ $post?->auteur->name ?? 'Utilisateur inconnu' }}</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ $post->auteur->pseudo }}</p>
                                     <p class="text-xs text-gray-500 dark:text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
                                 </div>
 
-                                @if(auth()->user()->id === $post->id)
-                                    <div class="ml-auto">
-                                        <form method="POST" action="{{ route('posts.destroy', $post->id) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-gray-400 hover:text-red-500 focus:outline-none">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
-                                        </form>
+                                <!-- Three-dot menu for post options -->
+                                @if(auth()->user()->id === $post->auteur_id)
+                                    <div class="ml-auto relative" x-data="{ open: false }">
+                                        <button @click="open = !open" class="text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 focus:outline-none transition-colors duration-200">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                            </svg>
+                                        </button>
+                                        <div x-show="open"
+                                             @click.away="open = false"
+                                             x-transition:enter="transition ease-out duration-200"
+                                             x-transition:enter-start="transform opacity-0 scale-95"
+                                             x-transition:enter-end="transform opacity-100 scale-100"
+                                             x-transition:leave="transition ease-in duration-150"
+                                             x-transition:leave-start="transform opacity-100 scale-100"
+                                             x-transition:leave-end="transform opacity-0 scale-95"
+                                             class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-600">
+                                            <div class="py-1">
+                                                <a href="{{ route('posts.edit', $post->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-colors duration-200">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                    Modifier
+                                                </a>
+                                                <form method="POST" action="{{ route('posts.destroy', $post->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="flex items-center w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 transition-colors duration-200">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                        Supprimer
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                                 @endif
                             </div>
 
-                            <p class="text-gray-800 dark:text-gray-200 mb-3">{{ $post->content }}</p>
+                            <p class="text-gray-800 dark:text-gray-200 mb-3">{{ $post->contenu }}</p>
                             @if($post->image)
-                                <div class="rounded-lg overflow-hidden mb-3">
+                                <div class="rounded-lg overflow-hidden mb-3 transition-transform duration-300 hover:scale-[1.02]">
                                     <img src="{{ asset('storage/' . $post->image) }}" class="w-full h-auto max-h-96 object-contain" alt="Post image">
                                 </div>
                             @endif
                             <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
-                                <button class="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400">
+                                <button class="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-200">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                                     </svg>
                                     <span>Like</span>
                                 </button>
-                                <button class="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400">
+                                <button @click="showComments = !showComments" class="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-200"
+                                        :class="{'text-indigo-500 dark:text-indigo-400': showComments}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                     </svg>
                                     <span>Comment</span>
                                 </button>
-                                <button class="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400">
+                                <button class="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-200">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                                     </svg>
                                     <span>Share</span>
                                 </button>
+                            </div>
+
+                            <!-- Comments Section (toggles visibility when Comment button is clicked) -->
+                            <div x-show="showComments"
+                                 x-transition:enter="transition ease-out duration-300"
+                                 x-transition:enter-start="opacity-0 transform -translate-y-4"
+                                 x-transition:enter-end="opacity-100 transform translate-y-0"
+                                 x-transition:leave="transition ease-in duration-200"
+                                 x-transition:leave-start="opacity-100 transform translate-y-0"
+                                 x-transition:leave-end="opacity-0 transform -translate-y-4"
+                                 class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+
+                                <!-- Existing Comments -->
+                                <div class="mb-4 space-y-3">
+                                    @forelse($post->comments ?? [] as $comment)
+                                        <div class="flex items-start space-x-3">
+                                            <img class="h-8 w-8 rounded-full object-cover" src="{{ $comment->user->profile_photo_url ?? asset('img/default-avatar.png') }}" alt="{{ $comment->user->name ?? 'Utilisateur' }}">
+                                            <div class="flex-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+                                                <div class="flex justify-between items-center mb-1">
+                                                    <p class="font-medium text-sm text-gray-900 dark:text-white">{{ $comment->user->name ?? 'Utilisateur' }}</p>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() ?? 'À l\'instant' }}</p>
+                                                </div>
+                                                <p class="text-sm text-gray-800 dark:text-gray-200">{{ $comment->content ?? 'Contenu du commentaire' }}</p>
+                                                <div class="flex mt-2 space-x-3 text-xs">
+                                                    <button class="text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-200">J'aime</button>
+                                                    <button class="text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-200">Répondre</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 italic">Aucun commentaire pour l'instant. Soyez le premier à commenter!</p>
+                                    @endforelse
+                                </div>
+
+                                <!-- New Comment Form -->
+                                <form class="flex items-start space-x-3 relative" method="post" action="{{ route('commentaires.store') }}">
+                                    @csrf
+                                    <input type="hidden" name="post_id" value="{{ $post->id }}">
+
+                                    <img class="h-8 w-8 rounded-full object-cover"
+                                         src="{{ auth()->user()->profile_photo_url ?? asset('img/default-avatar.png') }}"
+                                         alt="{{ auth()->user()->name ?? 'Utilisateur' }}">
+
+                                    <!-- Textarea Container -->
+                                    <div class="flex-1 relative">
+                                        <textarea rows="1" name="contenu"
+                                                  class="w-full px-3 py-2 bg-gray-700 border border-gray-600
+                                                   rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                                                   overflow-hidden resize-none transition-all duration-200 placeholder-gray-400 pr-10"
+                                                  placeholder="Écrire un commentaire..."
+                                                  x-data="{
+                                                resize() {
+                                                    $el.style.height = '38px';
+                                                    $el.style.borderRadius = '9999px';
+                                                    if ($el.scrollHeight > 38) {
+                                                        $el.style.height = Math.min($el.scrollHeight, 150) + 'px'; // Limits max height
+                                                        $el.style.borderRadius = '1rem';
+                                                    }
+                                                }
+                                            }"
+                                                  x-init="resize()"
+                                                  @input="resize()"
+                                                  @focus="resize()">
+                                        </textarea>
+
+                                        <!-- Comment Send Icon -->
+                                        <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-indigo-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M9 5l7 7-7 7"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
+
                             </div>
                         </div>
                     @endforeach
@@ -128,27 +230,70 @@
             </div>
 
             <!-- Right Sidebar - Contacts & Friend Requests -->
-            <div class="hidden lg:block w-1/5 fixed right-0 h-screen pt-16 pb-4 px-2 overflow-y-auto bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800">
+            <div class="hidden lg:block w-1/5 fixed right-0 h-screen pt-2 pb-4 px-2 overflow-y-auto bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800">
                 <!-- Friend Requests Section -->
-                <div class="p-4">
+                <div class="py-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Friend Requests</h3>
-                    <div class="space-y-3">
-                        <!-- Friend request items would go here -->
-                        <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                            <div class="flex items-center">
-                                <div class="h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-                                <div class="ml-3">
-                                    <p class="font-medium text-gray-900 dark:text-white">New Request</p>
-                                    <div class="flex space-x-2 mt-2">
-                                        <button class="px-3 py-1 bg-indigo-500 text-white text-sm rounded-md hover:bg-indigo-600">Accept</button>
-                                        <button class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-sm rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">Decline</button>
+                    @if($demandesRecues->isEmpty())
+                        <div class="p-12 text-center">
+                            <div class="relative">
+{{--                                <div class="text-8xl mb-4 animate-bounce">🤝</div>--}}
+                                <div class="absolute -inset-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 opacity-20 blur-3xl -z-10"></div>
+                            </div>
+                            <p class="text-gray-400 font-medium">No incoming friend requests at the moment</p>
+                        </div>
+                    @else
+                        <div class="space-y-2 ">
+                            @foreach($demandesRecues as $demande)
+                                <div class="py-4 rounded-2xl hover:bg-gradient-to-br  hover:to-indigo-50
+                                        transition-all duration-300 group/item mt-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4">
+                                            <div class="relative">
+                                                <img src="{{ $demande->receveur->profile_photo_url }}"
+                                                     class="w-11 h-11 rounded-2xl object-cover transition-all duration-300
+                                                         group-hover/item:rounded-full group-hover/item:rotate-2">
+                                            </div>
+                                            <div>
+
+                                                <h3 class="font-bold text-gray-400 text-lg">{{ $demande->receveur->pseudo }}</h3>
+
+                                                <p class="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
+                                                    @ {{ strtolower($demande->receveur->name . $demande->receveur->prenom) }}
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                        <form action="{{ route('accepterDemandeAmitie', $demande->id) }}" method="post">
+                                            @csrf
+                                            <button class="flex items-center gap-2 px-2 py-2 text-sm font-bold text-green-600 bg-green-100  rounded-xl
+                                                    ">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                                </svg>
+
+                                            </button>
+                                        </form>
+                                        <form action="{{ route('refuserDemandeAmitie', $demande->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="flex items-center gap-2 px-2 py-2 text-sm font-bold text-red-600 bg-red-100  rounded-xl
+                                                    ">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
-                    </div>
+                    @endif
+
                     <a href="{{ route('afficherDemandesAmitie') }}" class="block text-indigo-500 hover:text-indigo-600 text-sm mt-3">See all requests</a>
                 </div>
+
 
                 <!-- Contacts Section -->
                 <div class="p-4 border-t border-gray-200 dark:border-gray-800">
@@ -168,6 +313,8 @@
                     </div>
                     <a href="{{ route('showallamis') }}" class="block text-indigo-500 hover:text-indigo-600 text-sm mt-3">See all friends</a>
                 </div>
+
+
             </div>
         </div>
     </div>
