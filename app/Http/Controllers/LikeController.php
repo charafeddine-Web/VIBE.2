@@ -15,6 +15,7 @@ class LikeController extends Controller
             ->where('user_id', $user->id)
             ->first();
         if ($existingLike) {
+            $existingLike->delete();
             return back()->with('error', 'Vous avez déjà liké ce post.');
         }
         Like::create([
