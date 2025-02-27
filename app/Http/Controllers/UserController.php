@@ -8,22 +8,25 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        $users = [];
 
-        if (!$query) {
-            return view('navigation-menu'); // Afficher la page sans résultats
+        if ($request->has('query')) {
+            $query = $request->input('query');
+            $users = User::where('name', 'LIKE', "%{$query}%")
+                ->orWhere('email', 'LIKE', "%{$query}%")
+                ->orWhere('prenom', 'LIKE', "%{$query}%")
+                ->orWhere('pseudo', 'LIKE', "%{$query}%")
+                ->get();
         }
 
-        $users = User::whereRaw("LOWER(name) LIKE LOWER(?)", ["%$query%"])
-            ->orWhereRaw("LOWER(email) LIKE LOWER(?)", ["%$query%"])
-            ->orWhereRaw("LOWER(prenom) LIKE LOWER(?)", ["%$query%"])
-            ->orWhereRaw("LOWER(pseudo) LIKE LOWER(?)", ["%$query%"])
-            ->get(['id', 'name', 'email']);
-
-        return view('navigation-menu', compact('users'));
+        return response()->json($users);
     }
+
+
+
 
 
 

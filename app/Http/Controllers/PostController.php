@@ -17,14 +17,12 @@ class PostController extends Controller
     public function index()
     {
         $utilisateur = auth()->user();
-
         $demandesRecues=DemandeAmitie::where('utilisateur_recepteur_id', $utilisateur->id)
             ->where('statut', 'en attente')
             ->with('receveur')
             ->get();
         $comments= Commentaire::all();
         $likes= Like::all();
-
         $posts = Post::with(['auteur', 'likes', 'comments.user'])->orderBy('datePublication', 'desc')->get();
             return view('dashboard', compact('posts','demandesRecues','comments','likes'));
     }
