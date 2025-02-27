@@ -44,13 +44,10 @@
 
                         <!-- Profile section -->
                         <div class="px-4 py-5 relative">
-                            <!-- Avatar overlapping the header -->
                             <div class="absolute -top-8 left-4 w-16 h-16 rounded-full border-4 border-gray-800 overflow-hidden">
                                 <img src="{{ $ami->profile_photo_url ?? 'https://via.placeholder.com/50' }}" alt="Avatar"
                                      class="w-full h-full object-cover">
                             </div>
-
-                            <!-- User info with proper spacing -->
                             <div class="mt-8 mb-4">
                                 <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">{{ $ami->pseudo }}</h3>
                                 <p class="text-indigo-200 text-sm">{{ $ami->nom }} {{ $ami->prenom }}</p>
