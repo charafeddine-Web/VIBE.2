@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'), 'verified',
     Route::post('commentaires/Store', [CommentaireController::class, 'store'])->name('commentaires.store');
     Route::delete('commentaires/{id}', [CommentaireController::class, 'destroy'])->name('commentaires.destroy');
 
+
 // Routes pour les likes
     Route::post('likePost/{id}', [LikeController::class, 'likePost'])->name('likePost');
 

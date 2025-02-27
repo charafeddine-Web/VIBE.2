@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class AmisController extends Controller
 {
-
     public function afficherDemandesAmitie(){
         $utilisateur = auth()->user();
         $demandesEnvoyees=DemandeAmitie::where('utilisateur_demandeur_id', $utilisateur->id)
@@ -28,7 +27,6 @@ class AmisController extends Controller
                                             ->where ('statut','en attente')
                                             ->findOrFail($id);
         $demandeaccepter->accepter();
-
             return redirect()->route('afficherDemandesAmitie')->with('success', 'Demande d\'amitie accepter avec succes');
     }
 
