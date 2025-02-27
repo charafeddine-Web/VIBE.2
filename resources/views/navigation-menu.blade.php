@@ -7,7 +7,9 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('posts.index') }}" class="transition-transform duration-300 transform hover:scale-110">
                         <div class="bg-gradient-to-br from-purple-500 to-indigo-600 h-10 w-10 rounded-full flex items-center justify-center shadow-md relative overflow-hidden group">
-                            <span class="text-white font-bold text-xl">VIBE</span>
+                            <span class="text-white font-bold text-xl">
+                                <x-authentication-card-logo />
+                            </span>
                             <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                         </div>
                     </a>

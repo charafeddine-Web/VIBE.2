@@ -25,11 +25,6 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-
-
-
-
-
     public function envoyerDemandeAmitie($utilisateur_recepteur_id)
     {
         $utilisateur_demandeur = auth()->user();
@@ -48,10 +43,6 @@ class UserController extends Controller
             'message' =>  'Demande envoyée avec succès.'
         ]);
     }
-
-
-
-
 
 
 }
