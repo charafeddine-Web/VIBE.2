@@ -52,13 +52,9 @@ class AmisController extends Controller
 
     public  function showallamisaccepter(){
         $user = auth()->user();
-//        if (!$user) {
-//            return redirect()->route('login');
-//        }
-        $amis = $user->amis;
-//        dd($amis);
-
+        $amis = $user->amisEnvoyes->merge($user->amisRecus);
         return view('amis', compact('amis'));
     }
+
 
 }

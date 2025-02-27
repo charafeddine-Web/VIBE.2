@@ -46,6 +46,7 @@
                                <p class="text-xs text-indigo-300">${user.email}</p>
                             </div>
                                 <form action="${envoyerDemandeAmitieRoute(user.id)}" method="post">
+                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                   <button class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-700 hover:bg-indigo-600 text-white transition-colors">
                                      <i class="fas fa-user-plus"></i>
                                   </button>
@@ -68,6 +69,7 @@
     function envoyerDemandeAmitieRoute(userId) {
         return `{{ route('envoyerDemandeAmitie', ':utilisateur_recepteur_id') }}`.replace(':utilisateur_recepteur_id', userId);
     }
+
     document.getElementById("closeResults").addEventListener("click", function() {
         document.getElementById("searchResults").classList.add("hidden");
     });

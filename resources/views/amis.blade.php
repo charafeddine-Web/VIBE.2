@@ -1,33 +1,33 @@
 <x-app-layout>
-    <div class="flex justify-between  items-start  gap-6 bg-gradient-to-br from-gray-900 to-indigo-950  ">
+    <div class="flex justify-between  items-start h-[100vh]  gap-6 bg-gradient-to-br from-gray-900 to-indigo-950  ">
         <x-sidebar-left />
 
-        <div class="flex-1 max-w-6xl mx-auto px-4 py-6  pl-40   ">
+        <div class="flex-1 max-w-6xl mx-auto px-4 py-6  pl-40       ">
             <!-- Header Section -->
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-white mb-2 flex items-center">
                     <i class="fas fa-users text-indigo-400 mr-3"></i>
                     Mes Amis
                 </h1>
-                <div class="h-1 w-32 bg-indigo-500 rounded-full mb-4"></div>
+                <div class="h-0 w-32 bg-indigo-500 rounded-full mb-4"></div>
                 <p class="text-indigo-200 text-lg">Retrouvez tous vos amis et connectez-vous avec eux.</p>
             </div>
 
             <!-- Search Filter -->
-            <div class="mb-8 bg-gray-800 bg-opacity-60 rounded-xl p-4 shadow-lg backdrop-blur-sm border border-gray-700">
-                <div class="flex flex-wrap gap-4 items-center">
-                    <div class="relative flex-grow max-w-md">
-                        <input type="text" placeholder="Rechercher un ami..."
-                               class="w-full bg-gray-900 border border-indigo-500 rounded-full py-2 px-4 pl-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                        <i class="fas fa-search absolute left-3 top-3 text-indigo-400"></i>
-                    </div>
-                    <select class="bg-gray-900 border border-indigo-500 rounded-full py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                        <option>Tous les amis</option>
-                        <option>Récemment ajoutés</option>
-                        <option>En ligne</option>
-                    </select>
-                </div>
-            </div>
+{{--            <div class="mb-8 bg-gray-800 bg-opacity-60 rounded-xl p-4 shadow-lg backdrop-blur-sm border border-gray-700">--}}
+{{--                <div class="flex flex-wrap gap-4 items-center">--}}
+{{--                    <div class="relative flex-grow max-w-md">--}}
+{{--                        <input type="text" placeholder="Rechercher un ami..."--}}
+{{--                               class="w-full bg-gray-900 border border-indigo-500 rounded-full py-2 px-4 pl-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400">--}}
+{{--                        <i class="fas fa-search absolute left-3 top-3 text-indigo-400"></i>--}}
+{{--                    </div>--}}
+{{--                    <select class="bg-gray-900 border border-indigo-500 rounded-full py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400">--}}
+{{--                        <option>Tous les amis</option>--}}
+{{--                        <option>Récemment ajoutés</option>--}}
+{{--                        <option>En ligne</option>--}}
+{{--                    </select>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <!-- Friends Grid with Animation -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -36,10 +36,10 @@
                         <!-- Header with cover image -->
                         <div class="h-24 bg-gradient-to-r from-indigo-600 to-purple-600 relative">
                             <!-- Status indicator -->
-                            <div class="absolute top-3 right-3 flex items-center bg-gray-900 bg-opacity-70 rounded-full px-2 py-1">
-                                <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                                <span class="text-xs text-white">En ligne</span>
-                            </div>
+{{--                            <div class="absolute top-3 right-3 flex items-center bg-gray-900 bg-opacity-70 rounded-full px-2 py-1">--}}
+{{--                                <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>--}}
+{{--                                <span class="text-xs text-white">En ligne</span>--}}
+{{--                            </div>--}}
                         </div>
 
                         <!-- Profile section -->
@@ -49,8 +49,8 @@
                                      class="w-full h-full object-cover">
                             </div>
                             <div class="mt-8 mb-4">
-                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">{{ $ami->pseudo }}</h3>
-                                <p class="text-indigo-200 text-sm">{{ $ami->nom }} {{ $ami->prenom }}</p>
+                                <h3 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors"><a href="#">{{ $ami->pseudo }}</a></h3>
+                                <a href="#" class="text-indigo-200 text-sm">{{ $ami->nom }} {{ $ami->prenom }}</a>
                             </div>
 
                             <!-- Action buttons -->
@@ -73,19 +73,19 @@
             </div>
 
             <!-- Pagination -->
-            <div class="mt-10 flex justify-center">
-                <div class="flex items-center gap-2 bg-gray-800 rounded-full px-4 py-2 shadow-md">
-                    <button class="w-8 h-8 flex items-center justify-center rounded-full text-indigo-300 hover:bg-gray-700 transition-colors">
-                        <i class="fas fa-angle-left"></i>
-                    </button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-600 text-white">1</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-full text-indigo-300 hover:bg-gray-700 transition-colors">2</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-full text-indigo-300 hover:bg-gray-700 transition-colors">3</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-full text-indigo-300 hover:bg-gray-700 transition-colors">
-                        <i class="fas fa-angle-right"></i>
-                    </button>
-                </div>
-            </div>
+{{--            <div class="mt-10 flex justify-center">--}}
+{{--                <div class="flex items-center gap-2 bg-gray-800 rounded-full px-4 py-2 shadow-md">--}}
+{{--                    <button class="w-8 h-8 flex items-center justify-center rounded-full text-indigo-300 hover:bg-gray-700 transition-colors">--}}
+{{--                        <i class="fas fa-angle-left"></i>--}}
+{{--                    </button>--}}
+{{--                    <button class="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-600 text-white">1</button>--}}
+{{--                    <button class="w-8 h-8 flex items-center justify-center rounded-full text-indigo-300 hover:bg-gray-700 transition-colors">2</button>--}}
+{{--                    <button class="w-8 h-8 flex items-center justify-center rounded-full text-indigo-300 hover:bg-gray-700 transition-colors">3</button>--}}
+{{--                    <button class="w-8 h-8 flex items-center justify-center rounded-full text-indigo-300 hover:bg-gray-700 transition-colors">--}}
+{{--                        <i class="fas fa-angle-right"></i>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
     </div>
 </x-app-layout>

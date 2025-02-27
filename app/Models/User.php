@@ -63,11 +63,18 @@ class User extends Authenticatable  implements MustVerifyEmail
         'profile_photo_url',
     ];
 
-    public function amis()
+    public function amisEnvoyes()
     {
-        return $this->belongsToMany(User::class, 'demande_amitie', 'id', 'utilisateur_demandeur_id')
+        return $this->belongsToMany(User::class, 'demande_amitie', 'utilisateur_demandeur_id', 'utilisateur_recepteur_id')
             ->wherePivot('statut', 'accepté');
     }
+
+    public function amisRecus()
+    {
+        return $this->belongsToMany(User::class, 'demande_amitie', 'utilisateur_recepteur_id', 'utilisateur_demandeur_id')
+            ->wherePivot('statut', 'accepté');
+    }
+
 
     public function postes(){
         return $this->hasMany(Post::class,'auteur_id');

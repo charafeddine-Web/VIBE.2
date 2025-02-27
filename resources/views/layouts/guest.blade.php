@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <!-- Alpine.js (assure-toi qu'il est bien inclus) -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         {{--        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js" defer></script>--}}
         <title>{{ config('app.name', 'Laravel') }}</title>

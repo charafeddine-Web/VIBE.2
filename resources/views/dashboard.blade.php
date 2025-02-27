@@ -259,16 +259,16 @@
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-4">
                                             <div class="relative">
-                                                <img src="{{ $demande->receveur->profile_photo_url }}"
+                                                <img src="{{ $demande->demandeur->profile_photo_url }}"
                                                      class="w-11 h-11 rounded-2xl object-cover transition-all duration-300
                                                          group-hover/item:rounded-full group-hover/item:rotate-2">
                                             </div>
                                             <div>
 
-                                                <h3 class="font-bold text-gray-400 text-lg">{{ $demande->receveur->pseudo }}</h3>
+                                                <h3 class="font-bold text-gray-400 text-lg">{{ $demande->demandeur->pseudo }}</h3>
 
                                                 <p class="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
-                                                    @ {{ strtolower($demande->receveur->name . $demande->receveur->prenom) }}
+                                                    @ {{ strtolower($demande->demandeur->name . $demande->demandeur->prenom) }}
                                                 </p>
 
                                             </div>

@@ -31,17 +31,14 @@ class UserController extends Controller
         if (DemandeAmitie::where('utilisateur_demandeur_id', $utilisateur_demandeur->id)
             ->where('utilisateur_recepteur_id', $utilisateur_recepteur_id)
             ->exists()) {
-            return view('dashboard', [
-                'message' =>  'Demande déjà envoyée.'
-            ]);
+            return back()->withErrors(['error' => 'Demande déjà envoyée. !']);
         }
         $demande = new DemandeAmitie();
         $demande->utilisateur_demandeur_id = $utilisateur_demandeur->id;
         $demande->utilisateur_recepteur_id = $utilisateur_recepteur_id;
         $demande->envoyer();
-        return view('dashboard', [
-            'message' =>  'Demande envoyée avec succès.'
-        ]);
+        return back()->with('success', 'Commentaire ajouté avec succès !');
+
     }
 
 
