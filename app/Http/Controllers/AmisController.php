@@ -20,14 +20,12 @@ class AmisController extends Controller
                                         ->get();
         return view('demande', compact('demandesEnvoyees', 'demandesRecues'));
     }
-
     public function accepterDemandeAmitie($id){
             $utilisateur = auth()->user();
             $demandeaccepter=DemandeAmitie::where('id',$id)
                                             ->where ('statut','en attente')
                                             ->findOrFail($id);
         $demandeaccepter->accepter();
-
             return redirect()->route('afficherDemandesAmitie')->with('success', 'Demande d\'amitie accepter avec succes');
     }
 
@@ -53,13 +51,9 @@ class AmisController extends Controller
 
     public  function showallamisaccepter(){
         $user = auth()->user();
-//        if (!$user) {
-//            return redirect()->route('login');
-//        }
-        $amis = $user->amis;
-        dd($amis);
-
+        $amis = $user->amisEnvoyes->merge($user->amisRecus);
         return view('amis', compact('amis'));
     }
+
 
 }
