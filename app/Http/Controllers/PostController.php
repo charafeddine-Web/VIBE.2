@@ -41,7 +41,9 @@ class PostController extends Controller
             ->orderBy('datePublication', 'desc')
             ->get();
 
-        return view('dashboard', compact('posts','demandesRecues','comments','likes'));
+        $amis = $utilisateur->amisEnvoyes->merge($utilisateur->amisRecus);
+
+        return view('dashboard', compact('posts','demandesRecues','comments','likes','amis'));
     }
 
 

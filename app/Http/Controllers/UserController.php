@@ -21,7 +21,6 @@ class UserController extends Controller
                 ->orWhere('pseudo', 'LIKE', "%{$query}%")
                 ->get();
         }
-
         return response()->json($users);
     }
 

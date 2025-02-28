@@ -195,11 +195,9 @@
                                 <form class="flex items-start space-x-3 relative" method="post" action="{{ route('commentaires.store') }}">
                                     @csrf
                                     <input type="hidden" name="post_id" value="{{ $post->id }}">
-
                                     <img class="h-8 w-8 rounded-full object-cover"
                                          src="{{ auth()->user()->profile_photo_url ?? asset('img/default-avatar.png') }}"
                                          alt="{{ auth()->user()->name ?? 'Utilisateur' }}">
-
                                     <!-- Textarea Container -->
                                     <div class="flex-1 relative">
                                         <textarea rows="1" name="contenu"
@@ -231,7 +229,6 @@
                                         </button>
                                     </div>
                                 </form>
-
                             </div>
                         </div>
                     @endforeach
@@ -304,23 +301,25 @@
 
 
                 <!-- Contacts Section -->
+                <!-- Contacts Section -->
                 <div class="p-4 border-t border-gray-200 dark:border-gray-800">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Contacts</h3>
                     <div class="space-y-2">
-                        <!-- Contact items would go here -->
-                        <a href="#" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                            <div class="h-8 w-8 rounded-full bg-gray-300 dark:bg-gray-600 relative">
-                                <span class="absolute bottom-0 right-0 block h-2 w-2 rounded-full bg-green-500 ring-1 ring-white"></span>
-                            </div>
-                            <span class="ml-3 text-gray-900 dark:text-white">Friend Name</span>
-                        </a>
-                        <a href="#" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                            <div class="h-8 w-8 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-                            <span class="ml-3 text-gray-900 dark:text-white">Another Friend</span>
-                        </a>
+                        @foreach($amis as $ami)
+                            <a href="#" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+                                <div class="h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-600 relative overflow-hidden">
+                                    @if($ami->profile_photo_url)
+                                        <img src="{{ asset( $ami->profile_photo_url) }}" alt="{{ $ami->name }}" class="h-full w-full object-cover rounded-full">
+                                    @endif
+                                    <span class="absolute bottom-1 right-2 block h-2 w-2 rounded-full bg-green-500 ring-1 ring-white"></span>
+                                </div>
+                                <span class="ml-3 text-gray-900 dark:text-white">{{ $ami->pseudo}}</span>
+                            </a>
+                        @endforeach
                     </div>
                     <a href="{{ route('showallamis') }}" class="block text-indigo-500 hover:text-indigo-600 text-sm mt-3">See all friends</a>
                 </div>
+
 
 
             </div>
