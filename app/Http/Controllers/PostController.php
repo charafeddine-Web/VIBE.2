@@ -49,7 +49,7 @@ class PostController extends Controller
 
 
 
-    public function profile()
+    public function profile_auth()
     {
         $user = auth()->user();
         if (!$user) {
@@ -59,7 +59,10 @@ class PostController extends Controller
             ->where('auteur_id', $user->id)
             ->orderBy('datePublication', 'desc')
             ->get();
-        return view('profile.update-profile-information-form',compact('posts'));
+
+        return view('profile.update-profile-information-form', [
+            'posts' => $posts
+        ]);
     }
 
 
