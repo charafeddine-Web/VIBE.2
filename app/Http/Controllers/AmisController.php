@@ -20,7 +20,6 @@ class AmisController extends Controller
                                         ->get();
         return view('demande', compact('demandesEnvoyees', 'demandesRecues'));
     }
-
     public function accepterDemandeAmitie($id){
             $utilisateur = auth()->user();
             $demandeaccepter=DemandeAmitie::where('id',$id)

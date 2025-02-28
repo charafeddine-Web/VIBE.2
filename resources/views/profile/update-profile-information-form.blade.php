@@ -91,7 +91,6 @@
                                     <input id="prenom" type="text" class="w-full bg-gray-800 border-gray-700 focus:border-indigo-500 text-white rounded-md shadow-sm mt-1" wire:model="state.prenom" required />
                                     <x-input-error for="prenom" class="mt-2 text-red-400" />
                                 </div>
-
                                 <!-- Email -->
                                 <div>
                                     <h3 class="text-indigo-300 font-medium">{{ __('Email') }}</h3>
@@ -114,7 +113,6 @@
                                         @endif
                                     @endif
                                 </div>
-
                                 <!-- Save Button -->
                                 <div class="pt-4 flex items-center">
                                     <x-action-message class="mr-3 text-indigo-400" on="saved">
@@ -161,9 +159,10 @@
                             </a>
                         </div>
                     </div>
-
                     <!-- Posts -->
-                              <div class="space-y-6">
+
+
+                    <div class="space-y-6">
                                         @forelse($posts ?? [] as $post)
                                             <div class="bg-gray-900 rounded-lg shadow-xl border border-indigo-500/20 overflow-hidden">
                                                 <div class="p-4">

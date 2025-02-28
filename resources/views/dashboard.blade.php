@@ -67,31 +67,33 @@
                 </div>
 
                 <!-- Posts Feed -->
-                <div class="mt-6 space-y-6 max-w-2xl mx-auto">
+                <div class="mt-6 mb-20 space-y-6 max-w-2xl mx-auto">
                     @foreach($posts as $post)
                         <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md relative border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg" x-data="{ showComments: false }">
                             <!-- Post Header with User Info -->
-                            <div class="flex items-center mb-3">
-                                <a href="{{ route('profil.show', ['userId' => $post->auteur->id]) }}" class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full object-cover border-2 border-indigo-500 transition-transform duration-300 hover:scale-105"
-                                         src="{{ $post->auteur->profile_photo_url ?? asset('img/default-avatar.png') }}"
-                                         alt="{{ $post->auteur?->name ?? 'Utilisateur inconnu' }}">
-                                </a>
-                                <div class="ml-3">
-                                    <a href="{{ route('profil.show', ['userId' => $post->auteur->id]) }}" class="font-medium text-gray-900 dark:text-white">{{ $post->auteur->pseudo }}</a>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center ">
+                                    <a href="{{ route('profil.show', ['userId' => $post->auteur->id]) }}" class="flex-shrink-0">
+                                        <img class="h-10 w-10 rounded-full object-cover border-2 border-indigo-500 transition-transform duration-300 hover:scale-105"
+                                             src="{{ $post->auteur->profile_photo_url ?? asset('img/default-avatar.png') }}"
+                                             alt="{{ $post->auteur?->name ?? 'Utilisateur inconnu' }}">
+                                    </a>
+                                    <div class="ml-3">
+                                        <a href="{{ route('profil.show', ['userId' => $post->auteur->id]) }}" class="font-medium text-gray-900 dark:text-white">{{ $post->auteur->pseudo }}</a>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
+                                    </div>
                                 </div>
 
                                 <!-- Three-dot menu for post options -->
                                 @if(auth()->user()->id === $post->auteur_id)
-                                    <div class="ml-auto relative" x-data="{ open: false }">
-                                        <button @click="open = !open" class="text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 focus:outline-none transition-colors duration-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                                            </svg>
+                                    <div x-data="{ open: false, editModal: false }" class="relative">
+                                        <button @click="open = !open" class="p-1 rounded-md text-gray-300 font-bold">
+                                            ⋮
                                         </button>
+
                                         <div x-show="open"
-                                             @click.away="open = false"
+                                             @click.away="if (!editModal) open = false"
+                                             x-cloak
                                              x-transition:enter="transition ease-out duration-200"
                                              x-transition:enter-start="transform opacity-0 scale-95"
                                              x-transition:enter-end="transform opacity-100 scale-100"
@@ -100,16 +102,21 @@
                                              x-transition:leave-end="transform opacity-0 scale-95"
                                              class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-600">
                                             <div class="py-1">
-                                                <a href="{{ route('posts.edit', $post->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-colors duration-200">
+                                                <!-- Edit Button -->
+                                                <button @click.stop="editModal = true; open = false"
+                                                        class="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-colors duration-200">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                     </svg>
                                                     Modifier
-                                                </a>
+                                                </button>
+
+                                                <!-- Delete Button -->
                                                 <form method="POST" action="{{ route('posts.destroy', $post->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="flex items-center w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 transition-colors duration-200">
+                                                    <button type="submit"
+                                                            class="flex items-center w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 transition-colors duration-200">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                         </svg>
@@ -118,8 +125,79 @@
                                                 </form>
                                             </div>
                                         </div>
+
+                                        <!-- Edit Modal -->
+                                        <div x-show="editModal" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
+                                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Modifier le post</h2>
+                                                <form method="POST" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data" >
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="flex items-start space-x-3">
+                                                        <div class="flex-shrink-0">
+                                                            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                                                                <img class="h-10 w-10 rounded-full object-cover border-2 border-indigo-500" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                                            @else
+                                                                <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold">
+                                                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="flex-grow">
+                                                            <textarea
+                                                                name="contenu"
+                                                                rows="2"
+                                                                class="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 transition duration-200 ease-in-out"
+                                                                placeholder="Modifier votre post"
+                                                            >{{ $post->contenu }}</textarea>
+
+                                                            <div id="imagePreview_edit" class="mt-3 relative rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 {{ $post->image ? '' : 'hidden' }}">
+                                                                <img id="preview_edit" class="w-full max-h-40 object-contain" src="{{ $post->image ? asset('storage/'.$post->image) : '' }}" alt="Preview">
+                                                                <button type="button" id="removeImage" class="absolute top-2 right-2 bg-gray-800 bg-opacity-70 text-white rounded-full p-1 hover:bg-opacity-100 transition">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+
+                                                            <div class="flex flex-wrap justify-between items-center mt-4 border-t border-gray-200 dark:border-gray-700 pt-3">
+                                                                <div class="flex items-center space-x-2 mb-2 sm:mb-0">
+                                                                    <label for="image_upload_edit" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition group">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                                        </svg>
+                                                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">Photo</span>
+                                                                    </label>
+                                                                    <input
+                                                                        id="image_upload_edit"
+                                                                        type="file"
+                                                                        name="image"
+                                                                        accept="image/*"
+                                                                        class="hidden"
+                                                                        onchange="previewImageupdate(this)"
+                                                                    >
+                                                                </div>
+
+                                                                <div class="flex justify-end space-x-2">
+                                                                    <button @click="editModal = false" type="button" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
+                                                                        Annuler
+                                                                    </button>
+                                                                    <button type="submit" name="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
+                                                                        Sauvegarder
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                 @endif
+
+
                             </div>
 
                             <p class="text-gray-800 dark:text-gray-200 mb-3">{{ $post->contenu }}</p>
@@ -154,7 +232,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                                     </svg>
-{{--                                    <span>Share ({{ $post->shares->count() }})</span>--}}
+{{--                                  <span>Share ({{ $post->shares->count() }})</span>--}}
                                 </button>
                             </div>
 
@@ -306,15 +384,21 @@
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Contacts</h3>
                     <div class="space-y-2">
                         @foreach($amis as $ami)
-                            <a href="#" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                                <div class="h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-600 relative overflow-hidden">
+                            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                                <div class="relative h-12 w-12 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600">
                                     @if($ami->profile_photo_url)
-                                        <img src="{{ asset( $ami->profile_photo_url) }}" alt="{{ $ami->name }}" class="h-full w-full object-cover rounded-full">
+                                        <img src="{{ asset($ami->profile_photo_url) }}" alt="{{ $ami->name }}" class="h-full w-full object-cover">
+                                    @else
+                                        <div class="h-full w-full bg-gray-300 dark:bg-gray-600"></div>
                                     @endif
-                                    <span class="absolute bottom-1 right-2 block h-2 w-2 rounded-full bg-green-500 ring-1 ring-white"></span>
+                                    <!-- Statut en ligne -->
+                                    <span class="absolute bottom-1 right-1 block h-3.5 w-3.5 rounded-full
+                                        {{ $ami->isOnline() ? 'bg-green-500' : 'bg-gray-400' }} border-2 ">
+                                     </span>
                                 </div>
-                                <span class="ml-3 text-gray-900 dark:text-white">{{ $ami->pseudo}}</span>
+                                <span class="ml-3 text-gray-900 dark:text-white font-medium">{{ $ami->pseudo }}</span>
                             </a>
+
                         @endforeach
                     </div>
                     <a href="{{ route('showallamis') }}" class="block text-indigo-500 hover:text-indigo-600 text-sm mt-3">See all friends</a>
@@ -398,4 +482,25 @@
             }
         }
     </script>
+    <script>
+        function previewImageupdate(input) {
+            const preview = document.getElementById('preview_edit');
+            const imagePreview = document.getElementById('imagePreview_edit');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.getElementById('removeImage_edit').addEventListener('click', function() {
+            document.getElementById('preview_edit').src = '';
+            document.getElementById('imagePreview_edit').classList.add('hidden');
+            document.getElementById('image-upload_edit').value = '';
+        });
+    </script>
+
 </x-app-layout>

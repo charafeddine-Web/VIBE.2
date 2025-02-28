@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -51,12 +52,14 @@ class PostController extends Controller
     public function profile()
     {
         $user = auth()->user();
+        if (!$user) {
+            abort(403, 'Unauthorized action.');
+        }
         $posts = Post::with(['auteur', 'likes', 'comments.user'])
-            ->where('user_id', $user->id)
+            ->where('auteur_id', $user->id)
             ->orderBy('datePublication', 'desc')
             ->get();
-//dd($posts);
-        return view('update-profile-information-form',compact('posts'));
+        return view('profile.update-profile-information-form',compact('posts'));
     }
 
 
@@ -83,28 +86,38 @@ class PostController extends Controller
         return redirect()->back()->with('success', 'Post créé avec succès !');
     }
 
-    public function edit($id)
-    {
-        $post = Post::findOrFail($id);
-        return view('posts.edit', compact('post'));
-    }
+//    public function edit($id)
+//    {
+//        $post = Post::findOrFail($id);
+//        return view('edit', compact('post'));
+//    }
 
     public function update(Request $request, $id)
     {
+        $user = auth()->user();
         $post = Post::findOrFail($id);
-        if ($post->auteur !== Auth::id()) {
+
+        if ($post->auteur_id !== Auth::id()) {
             return redirect()->back()->with('error', 'Vous n\'avez pas l\'autorisation de modifier ce post.');
         }
+
         $request->validate([
             'contenu' => 'required|string|max:5000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image);
+            }
             $post->image = $request->file('image')->store('posts', 'public');
         }
 
-        $post->contenu = $request->contenu;
+        $post->update([
+            'contenu' => $request->contenu,
+            'datePublication' => Carbon::now(),
+            'image' => $post->image,
+        ]);
         $post->save();
         return redirect()->route('posts.index')->with('success', 'Post mis à jour avec succès !');
     }

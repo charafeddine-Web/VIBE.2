@@ -1,4 +1,4 @@
-<div class="max-w-2xl mx-auto bg-gray-100 dark:bg-gray-900 min-h-screen">
+<div class="max-w-2xl mx-auto bg-gray-100 dark:bg-gray-900 min-h-full">
     <!-- Profil header -->
     <div class="bg-indigo-600 dark:bg-indigo-900 rounded-b-xl shadow-lg relative overflow-hidden">
         <!-- Cover image -->
@@ -61,7 +61,7 @@
 {{--    </div>--}}
 
     <!-- Posts section -->
-    <div class="mt-6 space-y-6 mx-4 mb-8">
+    <div class="mt-6 space-y-6 mx-4 ">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Publications</h2>
 
         @if($posts->isEmpty())
