@@ -1,4 +1,5 @@
 # Vibe Social - Extension de Fonctionnalités Sociales
+![img.png](img.png)
 
 ## 📱 À propos
 
