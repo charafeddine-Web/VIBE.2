@@ -15,6 +15,10 @@ class CommentaireController extends Controller
 
     public function store(Request $request)
     {
+//        if (Commentaire::where('id', $request->id)
+//            ->exists()) {
+//            return back()->withErrors(['error' => 'conmment déjà envoyée. !']);
+//        }
         $request->validate([
             'post_id' => 'required|exists:posts,id',
             'contenu' => 'required|string|max:1000',

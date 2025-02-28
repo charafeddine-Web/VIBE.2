@@ -72,13 +72,13 @@
                         <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md relative border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg" x-data="{ showComments: false }">
                             <!-- Post Header with User Info -->
                             <div class="flex items-center mb-3">
-                                <div class="flex-shrink-0">
+                                <a href="{{ route('profil.show', ['userId' => $post->auteur->id]) }}" class="flex-shrink-0">
                                     <img class="h-10 w-10 rounded-full object-cover border-2 border-indigo-500 transition-transform duration-300 hover:scale-105"
                                          src="{{ $post->auteur->profile_photo_url ?? asset('img/default-avatar.png') }}"
                                          alt="{{ $post->auteur?->name ?? 'Utilisateur inconnu' }}">
-                                </div>
+                                </a>
                                 <div class="ml-3">
-                                    <p class="font-medium text-gray-900 dark:text-white">{{ $post->auteur->pseudo }}</p>
+                                    <a href="{{ route('profil.show', ['userId' => $post->auteur->id]) }}" class="font-medium text-gray-900 dark:text-white">{{ $post->auteur->pseudo }}</a>
                                     <p class="text-xs text-gray-500 dark:text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
                                 </div>
 

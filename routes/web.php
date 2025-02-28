@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentaireController;
 
+use App\Livewire\Profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +50,11 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'), 'verified',
 // Routes pour les likes
     Route::post('likePost/{id}', [LikeController::class, 'likePost'])->name('likePost');
 
+//profile
+    Route::get('/profil/{userId}', Profile::class)->name('profil.show');
 
+
+    Route::get('profile/posts', [PostController::class, 'profile'])->name('posts.profile');
 
 });
 

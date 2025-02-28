@@ -34,7 +34,7 @@
                 if (users.length > 0) {
                     users.forEach(user => {
                         let userElement = document.createElement("a");
-                        userElement.href = "/profile/" + user.id;
+                        userElement.href = "{{ route('profil.show', ['userId' => ':id']) }}".replace(':id', user.id);
                         userElement.classList.add("flex", "items-center", "gap-2", "px-2", "hover:bg-indigo-900", "rounded", "text-white", "mb-2");
                         userElement.innerHTML = `
                         <div class="w-8 h-8 bg-indigo-800 rounded-full overflow-hidden">

@@ -8,7 +8,7 @@ return new class extends Migration {
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('auteur')->constrained('users')->onDelete('cascade');
+            $table->foreignId('auteur_id')->constrained('users')->onDelete('cascade');
             $table->text('contenu');
             $table->string('image')->nullable();
             $table->timestamp('datePublication')->nullable();

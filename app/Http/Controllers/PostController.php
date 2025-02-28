@@ -23,17 +23,40 @@ class PostController extends Controller
             ->get();
         $comments= Commentaire::all();
         $likes= Like::all();
-        $posts = Post::with(['auteur', 'likes', 'comments.user'])->orderBy('datePublication', 'desc')->get();
-            return view('dashboard', compact('posts','demandesRecues','comments','likes'));
+
+        $amisIds = DemandeAmitie::where(function ($query) use ($utilisateur) {
+            $query->where('utilisateur_demandeur_id', $utilisateur->id)
+                ->orWhere('utilisateur_recepteur_id', $utilisateur->id);
+        })
+            ->where('statut', 'accepté')
+            ->pluck('utilisateur_demandeur_id', 'utilisateur_recepteur_id')
+            ->flatten()
+            ->unique()
+            ->filter(fn ($id) => $id != $utilisateur->id);
+
+        $amisIds->push($utilisateur->id);
+
+        $posts = Post::whereIn('auteur_id', $amisIds)
+            ->with(['auteur', 'likes', 'comments.user'])
+            ->orderBy('datePublication', 'desc')
+            ->get();
+
+        return view('dashboard', compact('posts','demandesRecues','comments','likes'));
     }
 
 
 
+    public function profile()
+    {
+        $user = auth()->user();
+        $posts = Post::with(['auteur', 'likes', 'comments.user'])
+            ->where('user_id', $user->id)
+            ->orderBy('datePublication', 'desc')
+            ->get();
+//dd($posts);
+        return view('update-profile-information-form',compact('posts'));
+    }
 
-//    public function create()
-//    {
-//        return view('posts.create');
-//    }
 
     public function store(Request $request)
     {
@@ -48,7 +71,6 @@ class PostController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('posts', 'public');
         }
-
         Post::create([
             'auteur_id' => $user->id,
             'contenu' => $request->contenu,
@@ -56,7 +78,6 @@ class PostController extends Controller
             'datePublication'=>Carbon::now()
 
         ]);
-
         return redirect()->back()->with('success', 'Post créé avec succès !');
     }
 
