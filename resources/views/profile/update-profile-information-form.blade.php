@@ -1,4 +1,5 @@
-    <div class="min-h-screen bg-gray-950 text-white">
+
+<div class="min-h-screen bg-gray-950 text-white">
         <!-- Profile Cover & Header -->
         <div class="bg-gradient-to-r from-indigo-900/40 to-gray-900 rounded-t-lg h-48 relative overflow-hidden mt- max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="absolute bottom-0 left-0 w-full p-4 flex items-end space-x-4">
@@ -181,8 +182,8 @@
                                     <h2 class="text-xl font-semibold text-white mb-2">{{ $post->title }}</h2>
                                     <p class="text-gray-300 mb-4">{{ $post->excerpt }}</p>
 
-                                    @if(isset($post->featured_image))
-                                        <img src="{{ $post->featured_image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover rounded-lg mb-4" />
+                                    @if(isset($post->image))
+                                        <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover rounded-lg mb-4" />
                                     @endif
 
                                     <div class="flex justify-between items-center pt-3 border-t border-indigo-900/20">
